@@ -150,7 +150,7 @@ function mostrar(dados) {
     
     //***********para vendas******** 
     for (var i in dados) {
-        const valorFormatado = "R$" + dados[i].Valor.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        const valorFormatado = "R$" + dados[i].valor.toLocaleString('pt-BR', {minimumFractionDigits: 2});
         const comissaoFormatada = "R$" + dados[i].comissao.toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
         let id = dados[i].idvenda;
