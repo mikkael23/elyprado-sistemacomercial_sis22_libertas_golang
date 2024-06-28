@@ -56,7 +56,7 @@ func GetVenda(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var venda models.Venda
-	err = db.QueryRow("SELECT numeronf, data, quantidade, valor, comissao, idcliente, idproduto, idvendedor FROM venda WHERE idvenda = ?", id).Scan(&venda.ID, &venda.NumeroNF, &venda.Data, &venda.Quantidade, &venda.Valor, &venda.Comissao, &venda.IdCliente, &venda.IdProduto, &venda.IdVendedor, &venda.IdVendedor)
+	err = db.QueryRow("SELECT idvenda,  numeronf, data, quantidade, valor, comissao, idcliente, idproduto, idvendedor FROM venda WHERE idvenda = ?", id).Scan(&venda.ID, &venda.NumeroNF, &venda.Data, &venda.Quantidade, &venda.Valor, &venda.Comissao, &venda.IdCliente, &venda.IdProduto, &venda.IdVendedor)
 	if err == sql.ErrNoRows {
 		http.Error(w, "Venda not found", http.StatusNotFound)
 		return
@@ -79,7 +79,7 @@ func CreateVenda(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db, err := config.Connect()
-	log.Println(*db)
+	// log.Println(*db)
 	log.Println(err)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -114,6 +114,8 @@ func UpdateVenda(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	
+
 	var venda models.Venda
 	if err := json.NewDecoder(r.Body).Decode(&venda); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -127,7 +129,7 @@ func UpdateVenda(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE venda SET numeronf = ?, data = ?, quantidade = ?, valor = ?, comissao = ?, idcliente = ?, idproduto = ?, idvendedor = ? WHERE idvenda = ?", venda.NumeroNF, venda.Data, venda.Quantidade, venda.Valor, venda.Comissao, venda.IdCliente, venda.IdProduto, venda.IdVendedor, venda.IdVendedor, id)
+	_, err = db.Exec("UPDATE venda SET numeronf = ?, data = ?, quantidade = ?, valor = ?, comissao = ?, idcliente = ?, idproduto = ?, idvendedor = ? WHERE idvenda = ?", venda.NumeroNF, venda.Data, venda.Quantidade, venda.Valor, venda.Comissao, venda.IdCliente, venda.IdProduto, venda.IdVendedor, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
