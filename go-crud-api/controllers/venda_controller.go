@@ -87,7 +87,7 @@ func CreateVenda(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO venda (numeronf, data, quantidade, valor, comissao, idcliente, idproduto, idvendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", venda.NumeroNF, venda.Data, venda.Quantidade, venda.Valor, venda.Comissao, venda.IdCliente, venda.IdProduto, venda.IdVendedor, venda.IdVendedor)
+	result, err := db.Exec("INSERT INTO venda (numeronf, data, quantidade, valor, comissao, idcliente, idproduto, idvendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", venda.NumeroNF, venda.Data, venda.Quantidade, venda.Valor, venda.Comissao, venda.IdCliente, venda.IdProduto, venda.IdVendedor)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
