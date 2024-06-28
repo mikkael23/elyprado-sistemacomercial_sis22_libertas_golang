@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"go-crud-api/config"
 	"go-crud-api/models"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,7 +29,7 @@ func GetVendas(w http.ResponseWriter, r *http.Request) {
 	var vendas []models.Venda
 	for rows.Next() {
 		var venda models.Venda
-		if err := rows.Scan(&venda.ID, &venda.NumeroNF, &venda.Data, &venda.Quantidade, &venda.Valor, &venda.Comissao, &venda.IdCliente, &venda.IdProduto, &venda.IdVendedor, &venda.IdVendedor); err != nil {
+		if err := rows.Scan(&venda.ID, &venda.NumeroNF, &venda.Data, &venda.Quantidade, &venda.Valor, &venda.Comissao, &venda.IdCliente, &venda.IdProduto, &venda.IdVendedor); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -71,12 +72,15 @@ func GetVenda(w http.ResponseWriter, r *http.Request) {
 // ➕Método de inserção de usuário
 func CreateVenda(w http.ResponseWriter, r *http.Request) {
 	var venda models.Venda
+
 	if err := json.NewDecoder(r.Body).Decode(&venda); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	db, err := config.Connect()
+	log.Println(*db)
+	log.Println(err)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -84,6 +88,7 @@ func CreateVenda(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	result, err := db.Exec("INSERT INTO venda (numeronf, data, quantidade, valor, comissao, idcliente, idproduto, idvendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", venda.NumeroNF, venda.Data, venda.Quantidade, venda.Valor, venda.Comissao, venda.IdCliente, venda.IdProduto, venda.IdVendedor, venda.IdVendedor)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
