@@ -30,6 +30,12 @@ func SetupRouter() *mux.Router {
 	router.HandleFunc("/produto/{id}", controllers.UpdateProduto).Methods("PUT")
 	router.HandleFunc("/produto/{id}", controllers.DeleteProduto).Methods("DELETE")
 
+	router.HandleFunc("/vendedor", controllers.GetVendedor).Methods("GET")
+	router.HandleFunc("/vendedor/{id}", controllers.GetVendedor).Methods("GET")
+	router.HandleFunc("/vendedor", controllers.CreateVendedor).Methods("POST")
+	router.HandleFunc("/vendedor/{id}", controllers.UpdateVendedor).Methods("PUT")
+	router.HandleFunc("/vendedor/{id}", controllers.DeleteVendedor).Methods("DELETE")
+
 	router.HandleFunc("/conta", controllers.GetConta).Methods("GET")
 
 	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
