@@ -18,7 +18,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT idusuario, nome, email, senha, telefone FROM usuario")
+	rows, err := db.Query("SELECT idusuario, nome, email, senha, telefone FROM usuario ORDER BY nome")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -53,7 +53,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var user models.User
-	err = db.QueryRow("SELECT id, nome, email, senha, telefone FROM users WHERE id = ?", id).Scan(&user.ID, &user.Nome, &user.Email, &user.Senha, &user.Telefone)
+	err = db.QueryRow("SELECT idusuario, nome, email, senha, telefone FROM usuario WHERE idusuario = ?", id).Scan(&user.ID, &user.Nome, &user.Email, &user.Senha, &user.Telefone)
 	if err == sql.ErrNoRows {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -80,7 +80,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO users (nome, email, senha, telefone) VALUES (?, ?, ?, ?)", user.Nome, user.Email, user.Senha, user.Telefone)
+	result, err := db.Exec("INSERT INTO usuario (nome, email, senha, telefone) VALUES (?, ?, ?, ?)", user.Nome, user.Email, user.Senha, user.Telefone)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -118,7 +118,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE users SET nome = ?, email = ?, senha = ?, telefone = ? WHERE id = ?", user.Nome, user.Email, user.Senha, user.Telefone, id)
+	_, err = db.Exec("UPDATE usuario SET nome = ?, email = ?, senha = ?, telefone = ? WHERE idusuario = ?", user.Nome, user.Email, user.Senha, user.Telefone, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -144,7 +144,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("DELETE FROM users WHERE id = ?", id)
+	_, err = db.Exec("DELETE FROM usuario WHERE idusuario = ?", id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
