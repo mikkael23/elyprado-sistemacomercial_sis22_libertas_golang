@@ -60,7 +60,7 @@ function novo() {
     const txtIdcliente = document.getElementById("txtIdcliente");
     const txtIdproduto = document.getElementById("txtIdproduto");
     const txtIdvendedor = document.getElementById("txtIdvendedor");
-    console.log(txtData.value)
+    
     modalTitle.innerHTML = '<i class="bi bi-receipt"></i>&nbsp;&nbsp;Cadastrar nova venda'
 
     
@@ -81,7 +81,7 @@ function novo() {
 function alterar(id) {
     idatual = id;
     //carregar os dados do id passado por parâmetro
-    fetch("http://127.0.0.1:3333/venda/"+ id)
+    fetch("http://127.0.0.1:8080/venda/"+ id)
         .then(response => response.json())
         .then(dados => {
             const txtNumeronf = document.getElementById("txtNumeronf");
@@ -116,7 +116,7 @@ function listar() {
     txtpesquisa = document.getElementById("txtpesquisa");
 
 
-    fetch("http://127.0.0.1:3333/venda?pesquisa=" + txtpesquisa.value)
+    fetch("http://127.0.0.1:8080/venda?pesquisa=" + txtpesquisa.value)
         .then(response => response.json())
        .then(dados => mostrar(dados));
     
@@ -128,7 +128,7 @@ function listar() {
 function mostrar(dados) {
     const lista = document.getElementById("lista");
 
-    
+    console.log(dados)
     const produtos = ["Coca-Cola", "Pepsi", "Doritos", "Fandangos"]
     
     const clientes = [
@@ -180,7 +180,7 @@ function excluir(id) {
 }
 
 function excluirSim() {
-        fetch( "http://127.0.0.1:3333/venda/" + idatual,
+        fetch( "http://127.0.0.1:8080/venda/" + idatual,
             {
                 headers: {
                     "Accept": "application/json",
@@ -210,27 +210,27 @@ function salvar() {
     const dados = {
         numeronf: txtNumeronf.value,
         data: (txtData.value),
-        quantidade: parseInt(txtQuantidade.value),
+        quantidade: (txtQuantidade.value),
         valor: parseFloat(txtValor.value),
         comissao: parseFloat(txtComissao.value),
         idcliente: parseInt(txtIdcliente.value),
         idproduto: parseInt(txtIdproduto.value),
         idvendedor: parseInt(txtIdvendedor.value),
     }
-
+    console.log(dados)
     var url;
     var metodo;
     if (idatual < 0) {
         //inserir
-        url = "http://127.0.0.1:3333/venda";
+        url = "http://127.0.0.1:8080/venda";
         metodo = "POST";
     } else {
         //alterar
-        url = "http://127.0.0.1:3333/venda/" + idatual;
+        url = "http://127.0.0.1:8080/venda/" + idatual;
         metodo = "PUT"
     }
 
-    console.log(dados)
+    
         fetch(url,
             {
                 headers: {
