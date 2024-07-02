@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetProduto(w http.ResponseWriter, r *http.Request) {
+func GetProdutos(w http.ResponseWriter, r *http.Request) {
 	db, err := config.Connect()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
