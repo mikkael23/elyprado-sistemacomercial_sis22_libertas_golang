@@ -15,7 +15,7 @@ function novo() {
     const txtbairro = document.getElementById("txtbairro");
     const txtcep = document.getElementById("txtcep");
     const txttelefone = document.getElementById("txttelefone");
-
+    const idcidade = document.getElementById("idcidade");
 
     //limpa os campo
     txtnome.value = "";
@@ -25,7 +25,7 @@ function novo() {
     txtbairro.value = "";
     txtcep.value = "";
     txttelefone.value = "";
-
+    idcidade.value = "";
     //abre a dialog
     modal.show();
 }
@@ -137,7 +137,7 @@ async function salvar() {
         bairro: txtbairro.value,
         cep: txtcep.value,
         telefone: txttelefone.value,
-        idcidade: idcidade.value
+        idcidade: parseInt(idcidade.value)
     }
 
     var url;

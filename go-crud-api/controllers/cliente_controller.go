@@ -18,7 +18,7 @@ func GetClientes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT idcliente, nome, cpf, logradouro, bairro, cep, telefone, IFNULL(idcidade, 0) AS idcidade FROM cliente ORDER BY nome")
+	rows, err := db.Query("SELECT idcliente, nome, cpf, logradouro,numero, bairro, cep, telefone, IFNULL(idcidade, 0) AS idcidade FROM cliente ORDER BY idcliente")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -27,7 +27,7 @@ func GetClientes(w http.ResponseWriter, r *http.Request) {
 	var users []models.Cliente
 	for rows.Next() {
 		var user models.Cliente
-		if err := rows.Scan(&user.ID, &user.Nome, &user.Cpf, &user.Logradouro, &user.Bairro, &user.Cep, &user.Telefone, &user.Idcidade); err != nil {
+		if err := rows.Scan(&user.ID, &user.Nome, &user.Cpf, &user.Logradouro, &user.Numero, &user.Bairro, &user.Cep, &user.Telefone, &user.Idcidade); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -53,7 +53,7 @@ func GetCliente(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var user models.Cliente
-	err = db.QueryRow("SELECT idcliente, nome, cpf, logradouro, bairro, cep, telefone, idcidade FROM cliente WHERE idcliente = ?", id).Scan(&user.ID, &user.Nome, &user.Cpf, &user.Logradouro, &user.Bairro, &user.Cep, &user.Telefone)
+	err = db.QueryRow("SELECT idcliente, nome, cpf, logradouro, numero, bairro, cep, telefone, IFNULL(idcidade, 0) AS idcidade FROM cliente WHERE idcliente = ?", id).Scan(&user.ID, &user.Nome, &user.Cpf, &user.Logradouro, &user.Numero, &user.Bairro, &user.Cep, &user.Telefone, &user.Idcidade)
 	if err == sql.ErrNoRows {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -80,7 +80,7 @@ func CreateCliente(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO cliente (nome, cpf, logradouro, bairro, cep, telefone, idcidade) VALUES (?, ?, ?, ?, ?, ?, ?)", user.Nome, user.Cpf, user.Logradouro, user.Numero, user.Bairro, user.Cep, user.Telefone, user.Idcidade)
+	result, err := db.Exec("INSERT INTO cliente (nome, cpf, logradouro, numero,bairro, cep, telefone, idcidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", user.Nome, user.Cpf, user.Logradouro, user.Numero, user.Bairro, user.Cep, user.Telefone, user.Idcidade)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
