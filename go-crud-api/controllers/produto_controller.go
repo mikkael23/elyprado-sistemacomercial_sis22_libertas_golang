@@ -19,7 +19,7 @@ func GetProdutos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT * FROM produto")
+	rows, err := db.Query("SELECT idproduto, descricao, precocusto,precovenda,saldoestoque,codbarras,idmarca FROM produto")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -54,7 +54,7 @@ func GetProduto(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var produto models.Produto
-	err = db.QueryRow("SELECT * FROM produto WHERE idproduto = ?", id).Scan(&produto.ID, &produto.Descricao, &produto.PrecoCusto, &produto.PrecoVenda, &produto.SaldoEstoque, &produto.CodBarras, &produto.IdMarca)
+	err = db.QueryRow("SELECT idproduto, descricao, precocusto,precovenda,saldoestoque,codbarras,idmarca FROM produto WHERE idproduto = ?", id).Scan(&produto.ID, &produto.Descricao, &produto.PrecoCusto, &produto.PrecoVenda, &produto.SaldoEstoque, &produto.CodBarras, &produto.IdMarca)
 	if err == sql.ErrNoRows {
 		http.Error(w, "produto not found", http.StatusNotFound)
 		return
