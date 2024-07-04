@@ -65,7 +65,7 @@ function listar() {
     const txtpesquisa = document.getElementById("txtpesquisa");
 
 
-    fetch("http://127.0.0.1:8080/cliente?pesquisa=" + txtpesquisa.value)
+    fetch("http://127.0.0.1:8080/cliente/" + txtpesquisa.value)
         .then(resp => resp.json())
         .then(dados => mostrar(dados));
 }

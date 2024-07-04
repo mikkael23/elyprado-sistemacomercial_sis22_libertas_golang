@@ -19,6 +19,7 @@ func SetupRouter() *mux.Router {
 	router.HandleFunc("/usuario/{id}", controllers.DeleteUser).Methods("DELETE")
 
 	router.HandleFunc("/cliente", controllers.GetClientes).Methods("GET")
+	router.HandleFunc("/cliente/pesquisa", controllers.GetClientes).Methods("GET")
 	router.HandleFunc("/cliente/{id}", controllers.GetCliente).Methods("GET")
 	router.HandleFunc("/cliente", controllers.CreateCliente).Methods("POST")
 	router.HandleFunc("/cliente/{id}", controllers.UpdateCliente).Methods("PUT")

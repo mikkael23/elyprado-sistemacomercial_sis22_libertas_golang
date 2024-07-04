@@ -17,8 +17,12 @@ func GetClientes(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	pesquisa := r.URL.Query().Get("pesquisa")
+	if pesquisa != "" {
+		pesquisa = " WHERE nome like '%" + pesquisa + "%' "
+	}
 	defer db.Close()
-	rows, err := db.Query("SELECT idcliente, nome, cpf, logradouro,numero, bairro, cep, telefone, IFNULL(idcidade, 0) AS idcidade FROM cliente ORDER BY idcliente")
+	rows, err := db.Query("SELECT idcliente, nome, cpf, logradouro,numero, bairro, cep, telefone, IFNULL(idcidade, 0) AS idcidade FROM cliente" + pesquisa + " ORDER BY idcliente")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
