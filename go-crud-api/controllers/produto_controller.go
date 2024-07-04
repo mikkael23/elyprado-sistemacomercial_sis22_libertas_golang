@@ -19,7 +19,7 @@ func GetProdutos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT idproduto, descricao, precocusto,precovenda,saldoestoque,codbarras,idmarca FROM produto")
+	rows, err := db.Query("SELECT idproduto, descricao, precocusto, precovenda, saldoestoque, codbarras, idmarca FROM produto")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
