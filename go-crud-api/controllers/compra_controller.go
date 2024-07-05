@@ -20,7 +20,7 @@ func GetCompra(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT idcompra, numeronf, data, quantidade, valor, idproduto, idproduto, FROM compra")
+	rows, err := db.Query("SELECT idcompra, numeronf, data, quantidade, valor, idproduto, idfornecedor FROM compra")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -36,6 +36,7 @@ func GetCompra(w http.ResponseWriter, r *http.Request) {
 		}
 		compras = append(compras, compra)
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(compras)
 }
@@ -57,7 +58,7 @@ func GetCompraByID(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var compra models.Compra
-	err = db.QueryRow("SELECT idcompra, numeronf, data, quantidade, valor, idproduto, idproduto, FROM compra = ?", id).Scan(&compra.ID, &compra.NumeroNF, &compra.Data, &compra.Quantidade, &compra.Valor, &compra.IdProduto, &compra.IdFornecedor)
+	err = db.QueryRow("SELECT idcompra, numeronf, data, quantidade, valor, idproduto, idfornecedor FROM compra WHERE idcompra = ?", id).Scan(&compra.ID, &compra.NumeroNF, &compra.Data, &compra.Quantidade, &compra.Valor, &compra.IdProduto, &compra.IdFornecedor)
 	if err == sql.ErrNoRows {
 		http.Error(w, "compra not found", http.StatusNotFound)
 		return
@@ -85,7 +86,7 @@ func CreateCompra(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO compra (numeronf, data, quantidade, valor, idproduto, idfornecedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", compra.ID, compra.NumeroNF, compra.Data, compra.Quantidade, compra.Valor, compra.IdProduto, compra.IdFornecedor)
+	result, err := db.Exec("INSERT INTO compra (numeronf, data, quantidade, valor, idproduto, idfornecedor) VALUES (?, ?, ?, ?, ?, ?)", compra.NumeroNF, compra.Data, compra.Quantidade, compra.Valor, compra.IdProduto, compra.IdFornecedor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -124,7 +125,7 @@ func UpdateCompra(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE compra SET numeronf = ?, data = ?, quantidade = ?, valor = ?, idproduto = ? WHERE idcompra = ?", compra.ID, compra.NumeroNF, compra.Data, compra.Quantidade, compra.Valor, compra.IdProduto, compra.IdFornecedor, id)
+	_, err = db.Exec("UPDATE compra SET numeronf = ?, data = ?, quantidade = ?, valor = ?, idproduto = ?, idfornecedor = ? WHERE idcompra = ?", compra.NumeroNF, compra.Data, compra.Quantidade, compra.Valor, compra.IdProduto, compra.IdFornecedor, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

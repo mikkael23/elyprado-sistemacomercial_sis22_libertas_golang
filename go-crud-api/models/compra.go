@@ -7,5 +7,5 @@ type Compra struct {
 	Quantidade   string `json:"quantidade"`
 	Valor        string `json:"valor"`
 	IdProduto    string `json:"idproduto"`
-	IdFornecedor string `json:"cep"`
+	IdFornecedor string `json:"idfornecedor"`
 }
